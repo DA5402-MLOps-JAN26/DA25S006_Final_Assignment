@@ -11,7 +11,7 @@ venv/
 
 # DVC - ignore actual data files but NOT .dvc pointer files
 /data/raw/*.parquet
-/data/processed/
+/data/processed/*.parquet
 /models/
 
 # MLflow

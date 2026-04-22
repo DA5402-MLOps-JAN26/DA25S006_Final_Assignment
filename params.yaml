@@ -1,0 +1,39 @@
+data:
+  raw_path: data/raw/
+  processed_path: data/processed/
+  min_token_count: 10
+
+dataset:
+  labels:
+    - Good Fit
+    - Potential Fit
+    - No Fit
+  label2id:
+    Good Fit: 0
+    Potential Fit: 1
+    No Fit: 2
+
+models:
+  candidates:
+    - sentence-transformers/all-MiniLM-L6-v2
+    - roberta-base
+    - microsoft/deberta-v3-small
+  best_model: null
+
+training:
+  phase1_epochs: 3
+  phase2_epochs: 5
+  batch_size: 16
+  head_lr: 1.0e-3
+  encoder_lr: 2.0e-5
+  dropout: 0.3
+  early_stopping_patience: 2
+  device: cuda
+
+mlflow:
+  tracking_uri: http://localhost:5000
+  experiment_name: resume_fit_analyzer
+
+drift:
+  threshold: 0.15
+  rolling_buffer_size: 100

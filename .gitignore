@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+
+# Virtual environment
+env/
+venv/
+
+# DVC - ignore actual data files but NOT .dvc pointer files
+/data/raw/*.parquet
+/data/processed/
+/models/
+
+# MLflow
+mlruns/
+mlflow_tracking/
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
+
+# Env vars
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Metrics
+/metrics/
+
+# DVC store
+dvc-store/

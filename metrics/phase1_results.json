@@ -1,0 +1,20 @@
+{
+  "results": {
+    "sentence-transformers/all-MiniLM-L6-v2": {
+      "val_loss": 0.8528,
+      "val_accuracy": 0.5869,
+      "val_macro_f1": 0.5805
+    },
+    "roberta-base": {
+      "val_loss": 1.007,
+      "val_accuracy": 0.454,
+      "val_macro_f1": 0.4472
+    },
+    "microsoft/deberta-v3-small": {
+      "val_loss": 1.0712,
+      "val_accuracy": 0.3315,
+      "val_macro_f1": 0.3235
+    }
+  },
+  "best_model": "sentence-transformers/all-MiniLM-L6-v2"
+}

@@ -18,7 +18,7 @@ models:
     - sentence-transformers/all-MiniLM-L6-v2
     - roberta-base
     - microsoft/deberta-v3-small
-  best_model: null
+  best_model: sentence-transformers/all-MiniLM-L6-v2
 
 training:
   phase1_epochs: 3

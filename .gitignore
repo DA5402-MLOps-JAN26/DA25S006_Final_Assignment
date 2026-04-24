@@ -33,8 +33,5 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Metrics
-/metrics/
-
 # DVC store
 dvc-store/

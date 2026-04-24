@@ -1,0 +1,8 @@
+{
+  "best_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "metrics": {
+    "val_loss": 0.5783,
+    "val_accuracy": 0.7646,
+    "val_macro_f1": 0.7457
+  }
+}

@@ -28,7 +28,6 @@ from src.model.model import BiEncoderClassifier
 from src.model.train import collate_fn
 
 
-# ── Load config ────────────────────────────────────────────────────────────
 def load_params(path: str = "params.yaml") -> dict:
     with open(path, "r") as f:
         return yaml.safe_load(f)
@@ -39,7 +38,6 @@ LABELS     = params["dataset"]["labels"]
 BEST_MODEL = params["models"]["best_model"]
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ── Load model ─────────────────────────────────────────────────────────────
 model_name_short = BEST_MODEL.split("/")[-1]
 checkpoint_path  = f"models/{model_name_short}_phase2_best.pt"
 
@@ -54,7 +52,6 @@ tokenizer = AutoTokenizer.from_pretrained(BEST_MODEL)
 
 print("Model loaded and ready.")
 
-# ── FastAPI app ────────────────────────────────────────────────────────────
 app = FastAPI(
     title="Resume Fit Analyzer",
     description="Predicts whether a resume is a Good Fit, Potential Fit, or No Fit for a job description.",
@@ -69,7 +66,6 @@ app.add_middleware(
 )
 
 
-# ── Helper ─────────────────────────────────────────────────────────────────
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     """Extract plain text from PDF bytes using pdfplumber."""
     text = ""
@@ -107,7 +103,6 @@ def predict_fit(resume_text: str, jd_text: str) -> dict:
     return {"label": label, "confidence": confidence}
 
 
-# ── Endpoints ──────────────────────────────────────────────────────────────
 @app.get("/health")
 def health():
     """Liveness check."""

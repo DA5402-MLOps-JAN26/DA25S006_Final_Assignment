@@ -31,9 +31,6 @@ training:
   device: cuda
 
 mlflow:
-  tracking_uri: http://localhost:5000
+  tracking_uri: http://localhost:5001
   experiment_name: resume_fit_analyzer
 
-drift:
-  threshold: 0.15
-  rolling_buffer_size: 100

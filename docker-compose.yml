@@ -1,0 +1,93 @@
+networks:
+  resume-net-v2:
+    driver: bridge
+
+volumes:
+  mlflow_data_v2:
+  airflow_logs_v2:
+  grafana_data_v2:
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: resume_api_v2
+    ports:
+      - "9001:8000"
+    environment:
+      - TRANSFORMERS_OFFLINE=1
+      - HF_DATASETS_OFFLINE=1
+      - HF_HUB_OFFLINE=1
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./params.yaml:/app/params.yaml
+      - ./mlruns:/app/mlruns
+      - /home/lab/.cache/huggingface:/root/.cache/huggingface
+    networks:
+      - resume-net-v2
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: resume_frontend_v2
+    ports:
+      - "9002:80"
+    networks:
+      - resume-net-v2
+    restart: unless-stopped
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.13.1
+    container_name: resume_mlflow_v2
+    ports:
+      - "9003:5000"
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+    volumes:
+      - mlflow_data_v2:/mlflow
+    networks:
+      - resume-net-v2
+    restart: unless-stopped
+
+  airflow:
+    image: apache/airflow:2.8.0
+    container_name: resume_airflow_v2
+    ports:
+      - "9004:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - airflow_logs_v2:/opt/airflow/logs
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - _AIRFLOW_DB_MIGRATE=true
+      - _AIRFLOW_WWW_USER_CREATE=true
+      - _AIRFLOW_WWW_USER_USERNAME=admin
+      - _AIRFLOW_WWW_USER_PASSWORD=admin
+    command: standalone
+    networks:
+      - resume-net-v2
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: resume_grafana_v2
+    ports:
+      - "9005:3000"
+    volumes:
+      - grafana_data_v2:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - resume-net-v2
+    restart: unless-stopped

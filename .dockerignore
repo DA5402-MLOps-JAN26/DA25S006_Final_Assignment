@@ -1,0 +1,17 @@
+env/
+.git/
+.dvc/
+dvc-store/
+data/
+models/
+mlruns/
+notebooks/
+tests/
+monitoring/
+airflow/
+frontend/
+metrics/
+.github/
+__pycache__/
+*.pyc
+*.pyo

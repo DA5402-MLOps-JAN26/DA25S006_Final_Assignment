@@ -12,6 +12,7 @@ import pdfplumber
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
+from fastapi.responses import JSONResponse, FileResponse
 from transformers import AutoTokenizer
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 import mlflow
@@ -183,3 +184,10 @@ def metrics():
     """Prometheus metrics scrape endpoint."""
     REQUEST_COUNT.labels(endpoint="/metrics", status="200").inc()
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+@app.get("/confusion-matrix")
+def get_confusion_matrix():
+    path = "/app/metrics/confusion_matrix.png"
+    if not os.path.exists(path):
+        return {"error": "Confusion matrix not found"}
+    return FileResponse(path, media_type="image/png")
